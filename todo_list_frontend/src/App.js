@@ -50,18 +50,30 @@ function App() {
   // Filter state for visible list: 'all' | 'active' | 'completed'
   const [filter, setFilter] = useState('all');
 
+  // Search query state for text filtering
+  const [searchQuery, setSearchQuery] = useState('');
+
   const filteredTodos = useReactMemo(() => {
     if (!Array.isArray(todos)) return [];
+    // First apply status filter
+    let byStatus = todos;
     switch (filter) {
       case 'active':
-        return todos.filter((t) => !t.completed);
+        byStatus = todos.filter((t) => !t.completed);
+        break;
       case 'completed':
-        return todos.filter((t) => t.completed);
+        byStatus = todos.filter((t) => t.completed);
+        break;
       case 'all':
       default:
-        return todos;
+        byStatus = todos;
+        break;
     }
-  }, [todos, filter]);
+    // Then apply text search (case-insensitive, trims whitespace)
+    const q = searchQuery.trim().toLowerCase();
+    if (!q) return byStatus;
+    return byStatus.filter((t) => (t.text || '').toLowerCase().includes(q));
+  }, [todos, filter, searchQuery]);
 
   const openSettings = () => {
     // Stub action for Settings/About; accessible and non-blocking
@@ -79,11 +91,14 @@ function App() {
         onlineMode={onlineMode}
       />
 
-      {/* New top navigation with filters and settings */}
+      {/* New top navigation with filters, search, and settings */}
       <NavBar
         activeFilter={filter}
         onChangeFilter={setFilter}
         onOpenSettings={openSettings}
+        searchQuery={searchQuery}
+        onSearchChange={setSearchQuery}
+        onClearSearch={() => setSearchQuery('')}
       />
 
       {/* Friendly welcome banner; becomes compact when there are tasks */}
@@ -129,7 +144,9 @@ function App() {
 
           {(!filteredTodos || filteredTodos.length === 0) && !loading && (
             <p className="empty-state" aria-live="polite">
-              {filter === 'completed'
+              {searchQuery
+                ? 'No tasks match your search.'
+                : filter === 'completed'
                 ? 'No completed tasks.'
                 : filter === 'active'
                 ? 'No active tasks.'

@@ -356,3 +356,28 @@
 .muted {
   color: var(--color-muted);
 }
+
+/* Search styles */
+.search-wrap .search-input {
+  height: 40px;
+}
+
+.search-wrap .search-clear {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: transparent;
+  color: var(--color-muted);
+  width: 28px;
+  height: 28px;
+  line-height: 1;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.search-wrap .search-clear:hover {
+  background: rgba(37,99,235,0.08);
+  color: var(--color-primary);
+}
