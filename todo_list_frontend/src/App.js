@@ -8,6 +8,7 @@ import WelcomeBanner from './components/WelcomeBanner';
 import Card, { CardHeader, CardBody, CardFooter } from './components/Card';
 import TodoInput from './components/TodoInput';
 import TodoList from './components/TodoList';
+import Calendar from './components/Calendar';
 import { useTodos } from './hooks/useTodos';
 import { storage } from './lib/storage';
 
@@ -57,6 +58,9 @@ function App() {
   // Search query state for text filtering
   const [searchQuery, setSearchQuery] = useState('');
 
+  // Date filter from Calendar: when set, only show tasks created on that date
+  const [selectedDate, setSelectedDate] = useState(null);
+
   const filteredTodos = useReactMemo(() => {
     if (!Array.isArray(todos)) return [];
     // First apply status filter
@@ -73,11 +77,23 @@ function App() {
         byStatus = todos;
         break;
     }
+
+    // Then apply date filter (createdAt within selectedDate local day)
+    let byDate = byStatus;
+    if (selectedDate instanceof Date) {
+      const start = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate(), 0, 0, 0, 0).getTime();
+      const end = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate() + 1, 0, 0, 0, 0).getTime();
+      byDate = byStatus.filter((t) => {
+        const created = Number(t.createdAt);
+        return !Number.isNaN(created) && created >= start && created < end;
+      });
+    }
+
     // Then apply text search (case-insensitive, trims whitespace)
     const q = searchQuery.trim().toLowerCase();
-    if (!q) return byStatus;
-    return byStatus.filter((t) => (t.text || '').toLowerCase().includes(q));
-  }, [todos, filter, searchQuery]);
+    if (!q) return byDate;
+    return byDate.filter((t) => (t.text || '').toLowerCase().includes(q));
+  }, [todos, filter, searchQuery, selectedDate]);
 
   const openSettings = () => {
     // Stub action for Settings/About; accessible and non-blocking
@@ -112,8 +128,14 @@ function App() {
         <ProgressStats stats={stats} />
         <WelcomeBanner hasTasks={Array.isArray(filteredTodos) && filteredTodos.length > 0} />
 
-        {/* Informational cards */}
-        <div className="cards-grid" role="region" aria-label="Helpful information">
+        {/* Calendar and informational cards */}
+        <div className="cards-grid" role="region" aria-label="Helpful information and calendar">
+          {/* Calendar */}
+          <Calendar
+            todos={todos}
+            selectedDate={selectedDate}
+            onSelectDate={setSelectedDate}
+          />
           {/* Quick Tips */}
           <Card role="article" ariaLabel="Quick tips card">
             <CardHeader title="Quick Tips" subtitle="Helpful shortcuts for faster entry" />
@@ -215,8 +237,26 @@ function App() {
           <header className="card-header" aria-label="Task list header">
             <div className="card-header-main">
               <h2 className="card-title">Your Tasks</h2>
+              {selectedDate ? (
+                <p className="card-subtitle" aria-live="polite">
+                  Filtering by {selectedDate.toLocaleDateString()}
+                </p>
+              ) : (
+                <p className="card-subtitle">All dates</p>
+              )}
             </div>
             <div className="card-actions">
+              {selectedDate ? (
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  onClick={() => setSelectedDate(null)}
+                  aria-label="Clear date filter"
+                  title="Clear date filter"
+                >
+                  Clear Date Filter
+                </button>
+              ) : null}
               <button
                 type="button"
                 className="btn btn-secondary"
