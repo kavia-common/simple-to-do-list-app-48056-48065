@@ -159,6 +159,12 @@ export function useTodos() {
 
   const stats = useMemo(() => computeProgressStats(todos), [todos]);
 
+  // Count of incomplete tasks for notification badge
+  const incompleteCount = useMemo(() => {
+    if (!Array.isArray(todos)) return 0;
+    return todos.reduce((acc, t) => acc + (t && !t.completed ? 1 : 0), 0);
+  }, [todos]);
+
   return {
     todos,
     addTask,
@@ -170,6 +176,7 @@ export function useTodos() {
     error,
     onlineMode,
     stats,
+    incompleteCount,
   };
 }
 

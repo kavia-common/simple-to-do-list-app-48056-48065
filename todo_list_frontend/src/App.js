@@ -36,6 +36,7 @@ function App() {
     error,
     onlineMode,
     stats,
+    incompleteCount,
   } = useTodos();
 
   // Apply and persist theme
@@ -91,6 +92,7 @@ function App() {
         onToggleTheme={toggleTheme}
         title="To-Do"
         onlineMode={onlineMode}
+        incompleteCount={incompleteCount}
       />
 
       {/* New top navigation with filters, search, and settings */}
@@ -101,6 +103,7 @@ function App() {
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
         onClearSearch={() => setSearchQuery('')}
+        incompleteCount={incompleteCount}
       />
 
       {/* Progress summary and welcome banner */}

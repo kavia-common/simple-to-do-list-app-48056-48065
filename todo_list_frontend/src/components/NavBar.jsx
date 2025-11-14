@@ -15,16 +15,15 @@ import BellIcon from '../assets/icons/BellIcon';
  * - onSearchChange: (value) => void
  * - onClearSearch: () => void
  */
-function NavBar({ activeFilter = 'all', onChangeFilter, onOpenSettings, searchQuery = '', onSearchChange, onClearSearch }) {
+function NavBar({ activeFilter = 'all', onChangeFilter, onOpenSettings, searchQuery = '', onSearchChange, onClearSearch, incompleteCount = 0 }) {
   const filters = [
     { key: 'all', label: 'All', aria: 'Show all tasks' },
     { key: 'active', label: 'Active', aria: 'Show active (incomplete) tasks' },
     { key: 'completed', label: 'Completed', aria: 'Show completed tasks' },
   ];
 
-  // Optional badge state; not wired to data yet
-  const notifications = 0;
-  const badge = notifications > 0;
+  const notifCount = Number(incompleteCount) || 0;
+  const badge = notifCount > 0;
 
   return (
     <nav className="navbar" aria-label="Primary">
@@ -92,37 +91,37 @@ function NavBar({ activeFilter = 'all', onChangeFilter, onOpenSettings, searchQu
           <button
             type="button"
             className="btn btn-icon btn-secondary"
-            aria-label="Notifications"
-            title="Notifications"
+            aria-label={`Notifications: ${notifCount} pending tasks`}
+            title={`Notifications: ${notifCount} pending tasks`}
             onClick={() => {}}
             style={{ position: 'relative' }}
           >
             <Icon size={18} className="icon" aria-hidden="true">
               <BellIcon />
             </Icon>
-            <span
-              aria-hidden="true"
-              style={{
-                position: 'absolute',
-                top: 6,
-                right: 6,
-                minWidth: badge ? 6 : 6,
-                minHeight: badge ? 6 : 6,
-                width: badge ? 'auto' : 6,
-                height: badge ? 'auto' : 6,
-                padding: badge ? '0 4px' : 0,
-                borderRadius: 9999,
-                background: 'var(--color-secondary)',
-                color: '#0b1220',
-                fontSize: 10,
-                fontWeight: 700,
-                lineHeight: badge ? '14px' : '6px',
-                textAlign: 'center',
-                boxShadow: '0 0 0 2px var(--color-surface)',
-              }}
-            >
-              {badge ? Math.min(notifications, 9) : ''}
-            </span>
+            {badge ? (
+              <span
+                aria-hidden="true"
+                style={{
+                  position: 'absolute',
+                  top: 6,
+                  right: 6,
+                  minWidth: 16,
+                  height: 16,
+                  padding: '0 4px',
+                  borderRadius: 9999,
+                  background: 'var(--color-secondary)',
+                  color: '#0b1220',
+                  fontSize: 10,
+                  fontWeight: 700,
+                  lineHeight: '16px',
+                  textAlign: 'center',
+                  boxShadow: '0 0 0 2px var(--color-surface)',
+                }}
+              >
+                {Math.min(notifCount, 99)}
+              </span>
+            ) : null}
           </button>
 
           {/* Settings */}
