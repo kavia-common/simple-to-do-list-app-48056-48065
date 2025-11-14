@@ -3,6 +3,7 @@ import './App.css';
 import './index.css';
 import Header from './components/Header';
 import NavBar from './components/NavBar';
+import ProgressStats from './components/ProgressStats';
 import WelcomeBanner from './components/WelcomeBanner';
 import TodoInput from './components/TodoInput';
 import TodoList from './components/TodoList';
@@ -34,6 +35,7 @@ function App() {
     loading,
     error,
     onlineMode,
+    stats,
   } = useTodos();
 
   // Apply and persist theme
@@ -101,8 +103,9 @@ function App() {
         onClearSearch={() => setSearchQuery('')}
       />
 
-      {/* Friendly welcome banner; becomes compact when there are tasks */}
+      {/* Progress summary and welcome banner */}
       <div className="container">
+        <ProgressStats stats={stats} />
         <WelcomeBanner hasTasks={Array.isArray(filteredTodos) && filteredTodos.length > 0} />
       </div>
 

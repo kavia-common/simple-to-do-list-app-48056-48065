@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { storage } from '../lib/storage';
 import { isApiEnabled, fetchTodos as apiFetch, createTodo as apiCreate, updateTodo as apiUpdate, deleteTodo as apiDelete } from '../lib/api';
+import { computeProgressStats } from '../lib/stats';
 
 const STORAGE_KEY = storage.nsKey();
 
@@ -57,11 +58,13 @@ export function useTodos() {
   }, [todos]);
 
   const addTask = useCallback(async (text) => {
+    const now = Date.now();
     const newTodo = {
       id: cryptoId(),
       text,
       completed: false,
-      createdAt: Date.now(),
+      createdAt: now,
+      completedAt: null,
     };
     setTodos((prev) => [newTodo, ...prev]);
 
@@ -86,11 +89,23 @@ export function useTodos() {
   }, [onlineMode]);
 
   const toggleTask = useCallback(async (id) => {
-    setTodos((prev) => prev.map((t) => (t.id === id ? { ...t, completed: !t.completed } : t)));
+    const now = Date.now();
+    setTodos((prev) =>
+      prev.map((t) =>
+        t.id === id
+          ? {
+              ...t,
+              completed: !t.completed,
+              completedAt: !t.completed ? now : null,
+            }
+          : t
+      )
+    );
     if (onlineMode) {
       try {
         const target = todos.find((t) => t.id === id);
-        await apiUpdate(id, { completed: !target?.completed });
+        const nextCompleted = !target?.completed;
+        await apiUpdate(id, { completed: nextCompleted, completedAt: nextCompleted ? now : null });
       } catch (e) {
         setOnlineMode(false);
         setError('Network error. Changes saved locally.');
@@ -142,6 +157,8 @@ export function useTodos() {
     }
   }, [onlineMode]);
 
+  const stats = useMemo(() => computeProgressStats(todos), [todos]);
+
   return {
     todos,
     addTask,
@@ -152,6 +169,7 @@ export function useTodos() {
     loading,
     error,
     onlineMode,
+    stats,
   };
 }
 
@@ -163,6 +181,7 @@ function normalize(items) {
       text: String(t.text ?? ''),
       completed: !!t.completed,
       createdAt: Number(t.createdAt ?? Date.now()),
+      completedAt: t.completed ? Number(t.completedAt ?? Date.now()) : (t.completedAt != null ? Number(t.completedAt) : null),
     }))
     .filter((t) => t.id && t.text);
 }

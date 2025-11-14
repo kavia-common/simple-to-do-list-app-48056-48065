@@ -9,6 +9,13 @@ test('renders header title and input placeholder', () => {
   expect(screen.getByRole('region', { name: /welcome message/i })).toBeInTheDocument();
 });
 
+test('renders progress sections Today and This Week', () => {
+  render(<App />);
+  expect(screen.getByRole('region', { name: /progress summary/i })).toBeInTheDocument();
+  expect(screen.getByText(/today/i)).toBeInTheDocument();
+  expect(screen.getByText(/this week/i)).toBeInTheDocument();
+});
+
 test('adds a task via Add button', () => {
   render(<App />);
   const input = screen.getByPlaceholderText(/add a new task/i);
