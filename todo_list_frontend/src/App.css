@@ -1,6 +1,6 @@
-/* Ocean Professional Theme */
+ /* Ocean Professional Theme */
 
-/* Variables */
+ /* Variables */
 :root {
   --color-primary: #2563EB;
   --color-secondary: #F59E0B;
@@ -39,6 +39,38 @@
   transition: background-color .3s ease, color .3s ease;
 }
 
+/* Two-pane layout */
+.app-shell {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  min-height: 100vh;
+}
+
+.sidebar {
+  position: sticky;
+  top: 0;
+  align-self: start;
+  height: 100vh;
+  overflow-y: auto;
+  background: linear-gradient(180deg, rgba(37,99,235,0.12), transparent), #0b1220;
+  background-color: var(--color-primary);
+  box-shadow: inset -1px 0 0 rgba(255,255,255,0.12);
+  color: #ffffff;
+}
+
+.main-area {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.content-scroll {
+  flex: 1;
+  overflow: auto;
+  min-height: 0;
+}
+
+/* Containers */
 .container {
   width: 100%;
   max-width: 720px;
@@ -46,17 +78,46 @@
   padding: 24px 16px 64px;
 }
 
-/* Header */
+/* Top Header (only search + notifications) */
+.topbar {
+  width: 100%;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.topbar-inner {
+  max-width: 100%;
+  padding: 12px 16px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Legacy navbar styles kept for backward compatibility (not used as top header now) */
 .navbar {
   width: 100%;
-  /* Ocean Professional: primary solid background for strong top-bar */
   background: var(--color-primary);
   border-bottom: 1px solid rgba(255,255,255,0.12);
   position: sticky;
   top: 0;
   z-index: 10;
   backdrop-filter: blur(8px);
-  /* Ensure readable contrast for content inside */
   color: #ffffff;
 }
 
@@ -70,6 +131,7 @@
   justify-content: space-between;
 }
 
+/* Brand */
 .brand {
   display: flex;
   align-items: center;
@@ -91,8 +153,105 @@
   margin: 0;
   font-size: 20px;
   font-weight: 700;
-  /* In navbar, we inherit white; elsewhere default text color */
   color: inherit;
+}
+
+/* Vertical Sidebar */
+.vertical-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px 12px 24px;
+}
+
+.vertical-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 8px;
+}
+
+.vertical-badge {
+  height: 34px;
+  width: 34px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.25), rgba(255,255,255,0.12));
+  box-shadow: 0 0 0 2px rgba(255,255,255,0.12), var(--shadow-sm);
+  display: grid;
+  place-items: center;
+  color: #0b1220;
+  font-weight: 800;
+}
+
+.vertical-title {
+  font-weight: 700;
+  font-size: 18px;
+  color: #ffffff;
+}
+
+.vertical-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px;
+}
+
+.vertical-link {
+  display: block;
+  text-decoration: none;
+  color: #ffffff;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.06);
+  transition: background-color .15s ease, border-color .15s ease, transform .05s ease;
+}
+
+.vertical-link:hover {
+  background: rgba(255,255,255,0.12);
+  border-color: rgba(255,255,255,0.25);
+}
+
+.vertical-filter {
+  display: block;
+  text-align: left;
+  color: #ffffff;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 10px;
+  padding: 10px 12px;
+  cursor: pointer;
+}
+
+.vertical-filter:hover {
+  background: rgba(255,255,255,0.12);
+  border-color: rgba(255,255,255,0.25);
+}
+
+.vertical-filter.is-active {
+  background: rgba(255,255,255,0.18);
+  border-color: rgba(255,255,255,0.35);
+  color: #ffffff;
+}
+
+.vertical-footer {
+  margin-top: auto;
+  padding: 8px;
+}
+
+.vertical-secondary {
+  width: 100%;
+  background: rgba(255,255,255,0.10);
+  color: #ffffff;
+  border: 1px solid rgba(255,255,255,0.22);
+  border-radius: 10px;
+  padding: 10px 12px;
+  cursor: pointer;
+}
+
+.vertical-secondary:hover {
+  background: rgba(255,255,255,0.16);
+  border-color: rgba(255,255,255,0.35);
 }
 
 /* Cards/Sections */
@@ -101,7 +260,7 @@
   border: 1px solid var(--color-border);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
-  padding: 0; /* structural padding moved to body/header/footer for flexibility */
+  padding: 0;
   overflow: hidden;
 }
 
@@ -172,7 +331,7 @@
 
 @media (min-width: 980px) {
   .container {
-    max-width: 960px; /* allow room for 3 columns on wide screens */
+    max-width: 960px;
   }
   .cards-grid {
     grid-template-columns: 1fr 1fr 1fr;
@@ -235,38 +394,6 @@
   border: 1px solid var(--color-border);
 }
 
-/* Navbar variants: keep contrast against primary background */
-.navbar .btn,
-.navbar .btn .icon {
-  color: #ffffff;
-}
-
-.navbar .btn.btn-secondary {
-  background: rgba(255,255,255,0.10);
-  border-color: rgba(255,255,255,0.22);
-  color: #ffffff;
-}
-.navbar .btn.btn-secondary:hover {
-  background: rgba(255,255,255,0.16);
-  border-color: rgba(255,255,255,0.35);
-}
-
-.navbar .btn.btn-icon.btn-danger {
-  /* keep danger distinguishable on blue */
-  background: rgba(239,68,68,0.18);
-  border-color: rgba(255,255,255,0.22);
-  color: #ffffff;
-}
-.navbar .btn.theme-toggle {
-  background: rgba(255,255,255,0.16);
-  color: #ffffff;
-  border: 1px solid rgba(255,255,255,0.22);
-}
-.navbar .btn.theme-toggle:hover {
-  background: rgba(255,255,255,0.22);
-  border-color: rgba(255,255,255,0.35);
-}
-
 .btn-secondary:hover {
   background: rgba(37,99,235,0.12);
 }
@@ -293,11 +420,8 @@
 
 .btn-icon.btn-danger {
   color: #ffffff;
-}
-
-.btn-icon.btn-secondary:hover {
-  color: var(--color-primary);
-  border-color: rgba(37,99,235,0.4);
+  background: linear-gradient(135deg, #EF4444, #dc2626);
+  border-color: transparent;
 }
 
 .btn-danger {
@@ -307,11 +431,6 @@
 
 .btn-danger:hover {
   filter: brightness(1.05);
-}
-
-.theme-toggle {
-  background: linear-gradient(135deg, #2563EB, #1d4ed8);
-  color: white;
 }
 
 /* Banners and Empty State */
@@ -547,7 +666,12 @@
   cursor: pointer;
 }
 
-/* Navbar search input contrast */
+/* Topbar search appearance on light background */
+.topbar .search-input.input {
+  background: var(--color-surface);
+}
+
+/* Navbar search contrast retained for legacy .navbar if used elsewhere */
 .navbar .search-input.input {
   background: rgba(255,255,255,0.15);
   border-color: rgba(255,255,255,0.30);
