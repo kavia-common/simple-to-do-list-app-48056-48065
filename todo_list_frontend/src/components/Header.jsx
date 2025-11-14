@@ -23,6 +23,21 @@ function Header({
   const notifCount = Number(incompleteCount) || 0;
   const badge = notifCount > 0;
 
+  // Inline SVG magnifying glass for search icon (no external deps)
+  const SearchIcon = ({ size = 16 }) => (
+    <svg
+      viewBox="0 0 24 24"
+      width={size}
+      height={size}
+      aria-hidden="true"
+      focusable="false"
+      style={{ display: 'block', color: 'var(--color-muted)' }}
+    >
+      <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="2" fill="none" />
+      <path d="M20 20l-3.5-3.5" stroke="currentColor" strokeWidth="2" fill="none" />
+    </svg>
+  );
+
   return (
     <header className="topbar" role="banner" aria-label={`${title} header`}>
       <div className="topbar-inner">
@@ -33,6 +48,23 @@ function Header({
 
         <div className="topbar-right">
           <div className="search-wrap" style={{ position: 'relative', minWidth: 220 }}>
+            {/* Left-placed search icon */}
+            <span
+              aria-hidden="true"
+              style={{
+                position: 'absolute',
+                left: 10,
+                top: '50%',
+                transform: 'translateY(-50%)',
+                width: 18,
+                height: 18,
+                pointerEvents: 'none',
+                color: 'var(--color-muted)',
+              }}
+            >
+              <SearchIcon size={18} />
+            </span>
+
             <input
               type="search"
               className="input search-input"
@@ -40,7 +72,8 @@ function Header({
               placeholder="Search tasks..."
               value={searchQuery}
               onChange={(e) => onSearchChange?.(e.target.value)}
-              style={{ paddingRight: searchQuery ? 32 : 12 }}
+              // Extra left padding to accommodate icon, keep right padding for clear button
+              style={{ paddingLeft: 36, paddingRight: searchQuery ? 32 : 12 }}
             />
             {searchQuery ? (
               <button

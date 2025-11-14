@@ -651,6 +651,18 @@
   height: 40px;
 }
 
+/* Left icon holder (kept semantically hidden in JSX) */
+.search-wrap .search-icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  pointer-events: none;
+  color: var(--color-muted);
+}
+
 .search-wrap .search-clear {
   position: absolute;
   right: 6px;
