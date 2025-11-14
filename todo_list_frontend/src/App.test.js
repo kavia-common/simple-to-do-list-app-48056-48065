@@ -5,6 +5,8 @@ test('renders header title and input placeholder', () => {
   render(<App />);
   expect(screen.getByRole('heading', { name: /to-do/i })).toBeInTheDocument();
   expect(screen.getByPlaceholderText(/add a new task/i)).toBeInTheDocument();
+  // Welcome banner region should be present
+  expect(screen.getByRole('region', { name: /welcome message/i })).toBeInTheDocument();
 });
 
 test('adds a task via Add button', () => {

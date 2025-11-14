@@ -3,6 +3,7 @@ import './App.css';
 import './index.css';
 import Header from './components/Header';
 import NavBar from './components/NavBar';
+import WelcomeBanner from './components/WelcomeBanner';
 import TodoInput from './components/TodoInput';
 import TodoList from './components/TodoList';
 import { useTodos } from './hooks/useTodos';
@@ -84,6 +85,11 @@ function App() {
         onChangeFilter={setFilter}
         onOpenSettings={openSettings}
       />
+
+      {/* Friendly welcome banner; becomes compact when there are tasks */}
+      <div className="container">
+        <WelcomeBanner hasTasks={Array.isArray(filteredTodos) && filteredTodos.length > 0} />
+      </div>
 
       <main className="container" role="main" aria-label="To-do application">
         <section className="section card">

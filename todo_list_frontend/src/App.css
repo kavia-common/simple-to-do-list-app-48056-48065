@@ -235,6 +235,47 @@
   border-color: rgba(37,99,235,0.3);
 }
 
+/* Welcome Banner */
+.welcome-banner {
+  display: block;
+  margin-top: 16px;
+  padding: 14px 16px;
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-sm);
+}
+
+.welcome-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.welcome-title {
+  margin: 0;
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.welcome-tip {
+  margin: 0;
+  color: var(--color-muted);
+  font-size: 14px;
+}
+
+/* Compact state when tasks exist: reduce size and hide tip for minimal impact */
+.welcome-compact {
+  padding: 8px 12px;
+}
+
+.welcome-compact .welcome-title {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.welcome-compact .welcome-tip {
+  display: none;
+}
+
 .empty-state {
   color: var(--color-muted);
   text-align: center;
