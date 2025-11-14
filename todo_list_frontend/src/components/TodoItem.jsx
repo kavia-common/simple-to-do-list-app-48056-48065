@@ -1,4 +1,9 @@
 import React, { useState } from 'react';
+import Icon from './Icon';
+import CheckCircleIcon from '../assets/icons/CheckCircleIcon';
+import CircleIcon from '../assets/icons/CircleIcon';
+import EditIcon from '../assets/icons/EditIcon';
+import TrashIcon from '../assets/icons/TrashIcon';
 
 /**
  * PUBLIC_INTERFACE
@@ -27,13 +32,17 @@ function TodoItem({ todo, onToggle, onDelete, onEdit }) {
 
   return (
     <li className="todo-item" role="listitem">
-      <input
+      <button
+        type="button"
+        className="btn btn-icon btn-secondary"
         aria-label="Toggle complete"
         title="Toggle complete"
-        type="checkbox"
-        checked={todo.completed}
-        onChange={() => onToggle(todo.id)}
-      />
+        onClick={() => onToggle(todo.id)}
+      >
+        <Icon size={22} className="icon">
+          {todo.completed ? <CheckCircleIcon /> : <CircleIcon />}
+        </Icon>
+      </button>
 
       {!editing ? (
         <div
@@ -63,7 +72,9 @@ function TodoItem({ todo, onToggle, onDelete, onEdit }) {
           title="Edit"
           onClick={() => setEditing((v) => !v)}
         >
-          ✎
+          <Icon size={18} className="icon">
+            <EditIcon />
+          </Icon>
         </button>
         <button
           type="button"
@@ -72,7 +83,9 @@ function TodoItem({ todo, onToggle, onDelete, onEdit }) {
           aria-label="Delete task"
           title="Delete task"
         >
-          🗑
+          <Icon size={18} className="icon">
+            <TrashIcon />
+          </Icon>
         </button>
       </div>
     </li>

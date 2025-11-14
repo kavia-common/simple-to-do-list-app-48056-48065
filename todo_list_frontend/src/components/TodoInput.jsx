@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import Icon from './Icon';
+import PlusIcon from '../assets/icons/PlusIcon';
 
 /**
  * PUBLIC_INTERFACE
@@ -40,7 +42,10 @@ function TodoInput({ onAdd, disabled = false }) {
         aria-label="Add task"
         disabled={disabled}
       >
-        Add
+        <Icon size={18} className="icon" aria-hidden="true">
+          <PlusIcon />
+        </Icon>
+        <span className="btn-text">Add</span>
       </button>
     </div>
   );

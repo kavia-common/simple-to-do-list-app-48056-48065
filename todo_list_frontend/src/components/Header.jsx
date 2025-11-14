@@ -1,10 +1,14 @@
 import React from 'react';
+import Icon from './Icon';
+import SunIcon from '../assets/icons/SunIcon';
+import MoonIcon from '../assets/icons/MoonIcon';
 
 /**
  * PUBLIC_INTERFACE
  * Header with app title and theme toggle, shows online/offline mode.
  */
 function Header({ title = 'To-Do', theme = 'light', onToggleTheme, onlineMode }) {
+  const nextMode = theme === 'light' ? 'dark' : 'light';
   return (
     <header className="navbar" role="banner">
       <div className="navbar-inner">
@@ -25,9 +29,13 @@ function Header({ title = 'To-Do', theme = 'light', onToggleTheme, onlineMode })
             type="button"
             className="btn theme-toggle"
             onClick={onToggleTheme}
-            aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
+            aria-label={`Switch to ${nextMode} mode`}
+            title={`Switch to ${nextMode} mode`}
           >
-            {theme === 'light' ? '🌙 Dark' : '☀️ Light'}
+            <Icon size={18} className="icon" aria-hidden="true">
+              {theme === 'light' ? <MoonIcon /> : <SunIcon />}
+            </Icon>
+            <span className="sr-only">{`Switch to ${nextMode} mode`}</span>
           </button>
         </div>
       </div>
