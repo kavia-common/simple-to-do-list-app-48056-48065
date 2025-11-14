@@ -1,7 +1,8 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState, useMemo as useReactMemo } from 'react';
 import './App.css';
 import './index.css';
 import Header from './components/Header';
+import NavBar from './components/NavBar';
 import TodoInput from './components/TodoInput';
 import TodoList from './components/TodoList';
 import { useTodos } from './hooks/useTodos';
@@ -45,13 +46,43 @@ function App() {
     setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
   };
 
+  // Filter state for visible list: 'all' | 'active' | 'completed'
+  const [filter, setFilter] = useState('all');
+
+  const filteredTodos = useReactMemo(() => {
+    if (!Array.isArray(todos)) return [];
+    switch (filter) {
+      case 'active':
+        return todos.filter((t) => !t.completed);
+      case 'completed':
+        return todos.filter((t) => t.completed);
+      case 'all':
+      default:
+        return todos;
+    }
+  }, [todos, filter]);
+
+  const openSettings = () => {
+    // Stub action for Settings/About; accessible and non-blocking
+    // eslint-disable-next-line no-alert
+    alert('Settings/About coming soon.');
+  };
+
   return (
     <div className="App ocean-app">
+      {/* Preserve existing Header for theme toggle and online indicator */}
       <Header
         theme={theme}
         onToggleTheme={toggleTheme}
         title="To-Do"
         onlineMode={onlineMode}
+      />
+
+      {/* New top navigation with filters and settings */}
+      <NavBar
+        activeFilter={filter}
+        onChangeFilter={setFilter}
+        onOpenSettings={openSettings}
       />
 
       <main className="container" role="main" aria-label="To-do application">
@@ -84,15 +115,19 @@ function App() {
           </div>
 
           <TodoList
-            todos={todos}
+            todos={filteredTodos}
             onToggle={toggleTask}
             onDelete={deleteTask}
             onEdit={editTask}
           />
 
-          {(!todos || todos.length === 0) && !loading && (
+          {(!filteredTodos || filteredTodos.length === 0) && !loading && (
             <p className="empty-state" aria-live="polite">
-              You don’t have any tasks yet. Add your first task above.
+              {filter === 'completed'
+                ? 'No completed tasks.'
+                : filter === 'active'
+                ? 'No active tasks.'
+                : 'You don’t have any tasks yet. Add your first task above.'}
             </p>
           )}
         </section>
