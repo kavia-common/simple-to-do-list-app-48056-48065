@@ -27,8 +27,8 @@ function NavBar({ activeFilter = 'all', onChangeFilter, onOpenSettings, searchQu
 
   return (
     <nav className="navbar" aria-label="Primary">
-      <div className="navbar-inner" style={{ gap: 12 }}>
-        <div className="brand" aria-label="Application">
+      <div className="navbar-inner" style={{ gap: 12, color: '#ffffff' }}>
+        <div className="brand" aria-label="Application" style={{ color: '#ffffff' }}>
           <div className="brand-badge" aria-hidden="true">✓</div>
           <h1 className="title">To-Do</h1>
         </div>
@@ -116,7 +116,8 @@ function NavBar({ activeFilter = 'all', onChangeFilter, onOpenSettings, searchQu
                   fontWeight: 700,
                   lineHeight: '16px',
                   textAlign: 'center',
-                  boxShadow: '0 0 0 2px var(--color-surface)',
+                  /* white ring for contrast on blue navbar */
+                  boxShadow: '0 0 0 2px rgba(255,255,255,0.9)',
                 }}
               >
                 {Math.min(notifCount, 99)}

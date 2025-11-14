@@ -16,8 +16,8 @@ function Header({ title = 'To-Do', theme = 'light', onToggleTheme, onlineMode, i
 
   return (
     <header className="navbar" role="banner">
-      <div className="navbar-inner">
-        <div className="brand" aria-label="Application">
+      <div className="navbar-inner" style={{ color: '#ffffff' }}>
+        <div className="brand" aria-label="Application" style={{ color: '#ffffff' }}>
           <div className="brand-badge" aria-hidden="true">✓</div>
           <h1 className="title">{title}</h1>
         </div>
@@ -52,7 +52,7 @@ function Header({ title = 'To-Do', theme = 'light', onToggleTheme, onlineMode, i
                   fontWeight: 700,
                   lineHeight: '16px',
                   textAlign: 'center',
-                  boxShadow: '0 0 0 2px var(--color-surface)',
+                  boxShadow: '0 0 0 2px rgba(255,255,255,0.9)',
                 }}
               >
                 {Math.min(notifCount, 99)}

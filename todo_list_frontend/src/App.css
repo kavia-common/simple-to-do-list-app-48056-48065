@@ -49,12 +49,15 @@
 /* Header */
 .navbar {
   width: 100%;
-  background: linear-gradient(180deg, rgba(37,99,235,0.08), rgba(255,255,255,0)) ;
-  border-bottom: 1px solid var(--color-border);
+  /* Ocean Professional: primary solid background for strong top-bar */
+  background: var(--color-primary);
+  border-bottom: 1px solid rgba(255,255,255,0.12);
   position: sticky;
   top: 0;
   z-index: 10;
   backdrop-filter: blur(8px);
+  /* Ensure readable contrast for content inside */
+  color: #ffffff;
 }
 
 .navbar-inner {
@@ -77,17 +80,19 @@
   height: 36px;
   width: 36px;
   border-radius: 10px;
-  background: linear-gradient(135deg, rgba(37,99,235,0.9), rgba(37,99,235,0.5));
-  box-shadow: var(--shadow-sm);
+  background: linear-gradient(135deg, rgba(255,255,255,0.25), rgba(255,255,255,0.12));
+  box-shadow: 0 0 0 2px rgba(255,255,255,0.12), var(--shadow-sm);
   display: grid;
   place-items: center;
-  color: white;
+  color: #0b1220;
 }
 
 .title {
   margin: 0;
   font-size: 20px;
   font-weight: 700;
+  /* In navbar, we inherit white; elsewhere default text color */
+  color: inherit;
 }
 
 /* Cards/Sections */
@@ -153,6 +158,38 @@
   background: rgba(37,99,235,0.08);
   color: var(--color-text);
   border: 1px solid var(--color-border);
+}
+
+/* Navbar variants: keep contrast against primary background */
+.navbar .btn,
+.navbar .btn .icon {
+  color: #ffffff;
+}
+
+.navbar .btn.btn-secondary {
+  background: rgba(255,255,255,0.10);
+  border-color: rgba(255,255,255,0.22);
+  color: #ffffff;
+}
+.navbar .btn.btn-secondary:hover {
+  background: rgba(255,255,255,0.16);
+  border-color: rgba(255,255,255,0.35);
+}
+
+.navbar .btn.btn-icon.btn-danger {
+  /* keep danger distinguishable on blue */
+  background: rgba(239,68,68,0.18);
+  border-color: rgba(255,255,255,0.22);
+  color: #ffffff;
+}
+.navbar .btn.theme-toggle {
+  background: rgba(255,255,255,0.16);
+  color: #ffffff;
+  border: 1px solid rgba(255,255,255,0.22);
+}
+.navbar .btn.theme-toggle:hover {
+  background: rgba(255,255,255,0.22);
+  border-color: rgba(255,255,255,0.35);
 }
 
 .btn-secondary:hover {
@@ -399,6 +436,10 @@
   border-color: rgba(255,255,255,0.08);
 }
 
+[data-theme="dark"] .navbar {
+  border-bottom-color: rgba(255,255,255,0.16);
+}
+
 .progress-fill {
   height: 100%;
   background: linear-gradient(135deg, #2563EB, #1d4ed8);
@@ -429,6 +470,29 @@
   line-height: 1;
   border-radius: 6px;
   cursor: pointer;
+}
+
+/* Navbar search input contrast */
+.navbar .search-input.input {
+  background: rgba(255,255,255,0.15);
+  border-color: rgba(255,255,255,0.30);
+  color: #ffffff;
+  box-shadow: none;
+}
+.navbar .search-input.input::placeholder {
+  color: rgba(255,255,255,0.8);
+}
+.navbar .search-input.input:focus {
+  border-color: rgba(255,255,255,0.9);
+  box-shadow: 0 0 0 3px rgba(255,255,255,0.30);
+  background: rgba(255,255,255,0.2);
+}
+.navbar .search-clear {
+  color: rgba(255,255,255,0.9);
+}
+.navbar .search-clear:hover {
+  background: rgba(255,255,255,0.16);
+  color: #ffffff;
 }
 
 .search-wrap .search-clear:hover {
