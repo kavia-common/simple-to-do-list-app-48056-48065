@@ -3,6 +3,7 @@ import Icon from './Icon';
 import SunIcon from '../assets/icons/SunIcon';
 import MoonIcon from '../assets/icons/MoonIcon';
 import BellIcon from '../assets/icons/BellIcon';
+import { Link } from '../lib/router';
 
 /**
  * PUBLIC_INTERFACE
@@ -23,6 +24,10 @@ function Header({ title = 'To-Do', theme = 'light', onToggleTheme, onlineMode, i
         </div>
 
         <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+          <nav aria-label="Sections" style={{ display: 'flex', gap: 8, marginRight: 8 }}>
+            <Link to="#/" className="btn btn-secondary" ariaLabel="Go to Home" title="Home">Home</Link>
+            <Link to="#/categories" className="btn btn-secondary" ariaLabel="Go to Categories" title="Categories">Categories</Link>
+          </nav>
           <button
             type="button"
             className="btn btn-icon btn-secondary"

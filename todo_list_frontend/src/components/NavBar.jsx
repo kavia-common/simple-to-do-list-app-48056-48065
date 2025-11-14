@@ -1,6 +1,7 @@
 import React from 'react';
 import Icon from './Icon';
 import BellIcon from '../assets/icons/BellIcon';
+import { Link } from '../lib/router';
 
 /**
  * PUBLIC_INTERFACE
@@ -33,7 +34,16 @@ function NavBar({ activeFilter = 'all', onChangeFilter, onOpenSettings, searchQu
           <h1 className="title">To-Do</h1>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, flex: 1, justifyContent: 'flex-end' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12, flex: 1, justifyContent: 'flex-end' }}>
+          {/* App navigation */}
+          <nav aria-label="Sections" style={{ display: 'flex', gap: 8 }}>
+            <Link to="#/" className="btn btn-secondary" ariaLabel="Go to Home" title="Home">
+              Home
+            </Link>
+            <Link to="#/categories" className="btn btn-secondary" ariaLabel="Go to Categories" title="Categories">
+              Categories
+            </Link>
+          </nav>
           {/* Filters */}
           <div role="group" aria-label="Task filters" style={{ display: 'flex', gap: 8 }}>
             {filters.map((f) => {
