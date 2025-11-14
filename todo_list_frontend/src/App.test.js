@@ -1,8 +1,24 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import App from './App';
 
-test('renders learn react link', () => {
+test('renders header title and input placeholder', () => {
   render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+  expect(screen.getByRole('heading', { name: /to-do/i })).toBeInTheDocument();
+  expect(screen.getByPlaceholderText(/add a new task/i)).toBeInTheDocument();
+});
+
+test('adds a task via Add button', () => {
+  render(<App />);
+  const input = screen.getByPlaceholderText(/add a new task/i);
+  fireEvent.change(input, { target: { value: 'Buy milk' } });
+  fireEvent.click(screen.getByRole('button', { name: /add task/i }));
+  expect(screen.getByText(/buy milk/i)).toBeInTheDocument();
+});
+
+test('adds a task via Enter key', () => {
+  render(<App />);
+  const input = screen.getByPlaceholderText(/add a new task/i);
+  fireEvent.change(input, { target: { value: 'Walk dog' } });
+  fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' });
+  expect(screen.getByText(/walk dog/i)).toBeInTheDocument();
 });
